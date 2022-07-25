@@ -214,7 +214,3 @@ get_component_list :: proc($T: typeid) -> (component_list: [dynamic]^T, error: E
 
   return component_list, {}
 }
-
-get_components_list :: proc(t: []any) {
-
-}
