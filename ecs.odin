@@ -3,9 +3,16 @@ package ecs
 import "core:runtime"
 import "core:container/queue"
 
+ECS_Error :: enum {
+  NO_ERROR,
+  ENTITY_DOES_NOT_HAVE_THIS_COMPONENT,
+  ENTITY_DOES_NOT_MAP_TO_ANY_INDEX,
+  ENTITY_ALREADY_HAS_THIS_COMPONENT,
+  COMPONENT_NOT_REGISTERED,
+  COMPONENT_IS_ALREADY_REGISTERED,
+}
+
 ECS :: struct {
-  
-  
 }
 
 init_ecs :: proc() {

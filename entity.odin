@@ -2,6 +2,8 @@ package ecs
 
 import "core:container/queue"
 
+Entity :: distinct int
+
 Entities :: struct {
   current_entity_id: int,
 
