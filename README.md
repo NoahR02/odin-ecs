@@ -5,7 +5,7 @@
  **Odin ECS** was built because I needed a way to dynamically add functionality to things in my game. I also just find entity component systems fun to work with and I couldn't find a general purpose one for Odin , so I made it myself.
 
 
- *Features*:
+ **Features**:
  - Any type can be a Component
  - Unlimited* Amount of Component Types
 
