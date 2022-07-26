@@ -2,13 +2,16 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="83.894836"
-   height="54.216164"
-   viewBox="0 0 83.894836 54.216164"
+   width="1006.7379"
+   height="650.59399"
+   viewBox="0 0 1006.7379 650.594"
    version="1.1"
    id="svg5"
-   sodipodi:docname="drawing.svg"
+   sodipodi:docname="ecs-readme.svg"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   inkscape:export-filename="ecs-readme.svg"
+   inkscape:export-xdpi="457.71588"
+   inkscape:export-ydpi="457.71588"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="12.103311"
-     inkscape:cx="30.404903"
-     inkscape:cy="30.322281"
+     inkscape:zoom="0.75645694"
+     inkscape:cx="-105.75619"
+     inkscape:cy="-138.80499"
      inkscape:window-width="2560"
      inkscape:window-height="1369"
      inkscape:window-x="-8"
@@ -34,60 +37,52 @@
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
-     id="defs2">
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : -5.7838364 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="120 : -5.7838364 : 1"
-       inkscape:persp3d-origin="60 : -25.783837 : 1"
-       id="perspective746" />
-  </defs>
+     id="defs2" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-15.890944,-26.991238)">
+     transform="translate(445.53066,271.19766)">
     <rect
-       style="fill:#1a1a1a"
+       style="fill:#1a1a1a;stroke-width:12"
        id="rect2789"
-       width="83.894836"
-       height="54.216164"
-       x="15.890944"
-       y="26.991238"
-       rx="41.476257"
-       ry="0.5" />
+       width="1006.738"
+       height="650.59399"
+       x="-445.53067"
+       y="-271.19766"
+       rx="497.71509"
+       ry="6" />
     <text
        xml:space="preserve"
-       style="fill:#280b0b"
-       x="23.045393"
-       y="27.819176"
+       style="font-size:144px;fill:#280b0b;stroke-width:12"
+       x="-359.67728"
+       y="-261.26239"
        id="text2845"><tspan
          sodipodi:role="line"
          id="tspan2843"
-         x="23.045393"
-         y="27.819176"
-         style="fill:#ffffff" /><tspan
+         x="-359.67728"
+         y="-261.26239"
+         style="fill:#ffffff;stroke-width:12" /><tspan
          sodipodi:role="line"
-         x="23.045393"
-         y="42.819176"
-         style="fill:#ffffff"
+         x="-359.67728"
+         y="-81.26239"
+         style="fill:#ffffff;stroke-width:12"
          id="tspan2897">E<tspan
-   style="fill:#808080"
+   style="fill:#808080;stroke-width:12"
    id="tspan2903">ntity</tspan></tspan><tspan
          sodipodi:role="line"
-         x="23.045393"
-         y="57.819176"
-         style="fill:#ffffff"
+         x="-359.67728"
+         y="98.73761"
+         style="fill:#ffffff;stroke-width:12"
          id="tspan2899">C<tspan
-   style="fill:#808080"
+   style="fill:#808080;stroke-width:12"
    id="tspan3007">omponent</tspan></tspan><tspan
          sodipodi:role="line"
-         x="23.045393"
-         y="72.819176"
-         style="fill:#ffffff"
+         x="-359.67728"
+         y="278.73761"
+         style="fill:#ffffff;stroke-width:12"
          id="tspan2901">S<tspan
-   style="fill:#808080"
+   style="fill:#808080;stroke-width:12"
    id="tspan3009">ystem</tspan></tspan></text>
   </g>
 </svg>
