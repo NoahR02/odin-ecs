@@ -12,45 +12,49 @@ ECS_Error :: enum {
   COMPONENT_IS_ALREADY_REGISTERED,
 }
 
-ECS :: struct {
+Context :: struct {
+  entities: Entities,
+  component_map: map[typeid]Component_List,
 }
 
-init_ecs :: proc() {
-  create_entities :: proc() {
-    entities.entities = make([dynamic]Entity)
-    queue.init(&entities.available_slots)
+init_ecs :: proc() -> (ctx: Context) {
+  create_entities :: proc(ctx: ^Context) {
+    ctx.entities.entities = make([dynamic]Entity)
+    queue.init(&ctx.entities.available_slots)
   }
-  create_entities()
+  create_entities(&ctx)
 
-  create_component_map :: proc() {
-    component_map = make(map[typeid]Component_List)
+  create_component_map :: proc(ctx: ^Context) {
+    ctx.component_map = make(map[typeid]Component_List)
   }
 
-  create_component_map()
+  create_component_map(&ctx)
+
+  return ctx
 }
 
-deinit_ecs :: proc() {
+deinit_ecs :: proc(ctx: ^Context) {
 
-  destroy_entities :: proc() {
-    delete(entities.entities)
-    entities.current_entity_id = 0
-    queue.destroy(&entities.available_slots)
+  destroy_entities :: proc(ctx: ^Context) {
+    delete(ctx.entities.entities)
+    ctx.entities.current_entity_id = 0
+    queue.destroy(&ctx.entities.available_slots)
   }
-  destroy_entities()
+  destroy_entities(ctx)
 
-  destroy_component_map :: proc() {
-    for key, value in component_map {
-      queue.destroy(&(&component_map[key]).available_slots)
+  destroy_component_map :: proc(ctx: ^Context) {
+    for key, value in ctx.component_map {
+      queue.destroy(&(&ctx.component_map[key]).available_slots)
       free(value.data^.data)
       free(value.data)
     }
   
-    for key, value in component_map {
+    for key, value in ctx.component_map {
       delete(value.entity_indices)
     }
   
-    delete(component_map)
+    delete(ctx.component_map)
   }
-  destroy_component_map()
+  destroy_component_map(ctx)
 }
 

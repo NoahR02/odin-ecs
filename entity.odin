@@ -11,10 +11,8 @@ Entities :: struct {
   available_slots: queue.Queue(int),
 }
 
-entities: Entities
-
-create_entity :: proc() -> Entity {
-  using entities
+create_entity :: proc(ctx: ^Context) -> Entity {
+  using ctx.entities
 
   if queue.len(available_slots) <= 0 {
     append_elem(&entities, Entity(current_entity_id))
@@ -29,10 +27,11 @@ create_entity :: proc() -> Entity {
   return Entity(current_entity_id)
 }
 
-destroy_entity :: proc(entity: Entity) {
-  using entities
+destroy_entity :: proc(ctx: ^Context, entity: Entity) {
+  using ctx.entities
 
-  for _, component in &component_map {
+
+  for _, component in &ctx.component_map {
    found := entity in component.entity_indices
    if !found do continue
 

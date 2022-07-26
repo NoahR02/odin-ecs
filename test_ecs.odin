@@ -1,6 +1,6 @@
 package ecs
 
-import "core:fmt"
+/* import "core:fmt"
 import "core:testing"
 
 @(test)
@@ -30,4 +30,4 @@ test_ecs :: proc(test: ^testing.T) {
   add_component(entity, Sprite{20, 20, 32, 32})
   defer remove_component(entity, Sprite)
   
-}
+} */
