@@ -18,7 +18,7 @@ main :: proc() {
   ctx = ecs.init_ecs()
   defer ecs.deinit_ecs(&ctx)
 
-  player = ecs.create_entity(&ctx)
+  player := ecs.create_entity(&ctx)
  
   // (Optional) Or you can let ecs.deinit_ecs()... clean this up.
   defer ecs.destroy_entity(&ctx, player)
