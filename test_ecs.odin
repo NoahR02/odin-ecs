@@ -1,33 +1,70 @@
 package ecs
 
-/* import "core:fmt"
+import "core:fmt"
 import "core:testing"
+import "core:container/queue"
 
-@(test)
-test_ecs :: proc(test: ^testing.T) {
+ctx: Context
+
+Sprite :: struct {
+  x, y: f32,
+  width, height: f32,
+}
+
+Name :: distinct string
+
+@test
+test_entity :: proc(test: ^testing.T) {
+  ctx = init_ecs()
+  defer deinit_ecs(&ctx)
+
+  entity := create_entity(&ctx)
+  testing.expect(test, entity == 0, "Error: The first entity id should be zero!")  
+  testing.expect(test, ctx.entities.available_slots.len == 0, "Error: The queue should be empty upon creation of the first entity!")  
+  testing.expect(test, ctx.entities.current_entity_id == 1, "Error: The current entity id should have been incremented!")
+
+  destroy_entity(&ctx, entity)
+  testing.expect(test, ctx.entities.available_slots.len == 1, "Error: The deleted entity id should be placed on the queue!")
+  testing.expect(test, queue.front(&ctx.entities.available_slots) == 0, "Error: The new entity slot should be 0!")
+}
+
+@test
+test_component :: proc(test: ^testing.T) {
+  ctx = init_ecs()
+  defer deinit_ecs(&ctx)
+
+  entity := create_entity(&ctx)
+
+  test_comp_value := Sprite {
+    x = 20, y = 20,
+    width = 64, height = 64,
+  }
   
-  init_ecs()
-  defer deinit_ecs()
+  is_component_added_properly :: proc(test: ^testing.T, entity: Entity, component: $A) -> (^A) {
+    comp, comp_err := add_component(&ctx, entity, component)
+    is_returned_comp_equal := comp^ == component
+    testing.expect(test, is_returned_comp_equal == true, "Error: The returned component is not equal to the original component passed in.")
+    testing.expect_value(test, comp_err, ECS_Error.NO_ERROR)
 
-  Sprite :: struct {
-    x, y: f32,
-    width, height: f32,
+    is_type_in_map := A in ctx.component_map
+    testing.expect(test, is_type_in_map == true, "Failed to register the component type!")
+    return comp
   }
 
-  entity := create_entity()
-  defer destroy_entity(entity)
-  
-  comp, add_err := add_component(entity, Sprite{20, 10, 90, 80})
-  testing.expect_value(test, comp^, Sprite{20, 10, 90, 80})
-  testing.expect_value(test, add_err, ECS_Error.NO_ERROR)
-  
-  remove_err1 := remove_component(entity, Sprite)
-  testing.expect_value(test, remove_err1, ECS_Error.NO_ERROR)
+  sprite_comp := is_component_added_properly(test, entity, test_comp_value)
+  name_comp := is_component_added_properly(test, entity, Name("Test Name"))
 
-  remove_err2 := remove_component(entity, i32)
-  testing.expect_value(test, remove_err2, ECS_Error.ENTITY_DOES_NOT_HAVE_THIS_COMPONENT)
+  is_component_removed_properly :: proc(test: ^testing.T, entity: Entity, $T: typeid) {
+    old_entity_index := ctx.component_map[T].entity_indices[entity]
+    
+    comp_err := remove_component(&ctx, entity, T)
+    testing.expect_value(test, comp_err, ECS_Error.NO_ERROR)
 
-  add_component(entity, Sprite{20, 20, 32, 32})
-  defer remove_component(entity, Sprite)
-  
-} */
+    is_entity_index_valid := entity in ctx.component_map[T].entity_indices
+    testing.expect(test, is_entity_index_valid == false, "Error: The key should be deleted after the entity removes the component.")
+    testing.expect(test, old_entity_index == queue.front(&(&ctx.component_map[T]).available_slots), "Error: The old component slot should be put on the queue!")
+  }
+
+  is_component_removed_properly(test, entity, Sprite)
+  is_component_removed_properly(test, entity, Name)
+}
