@@ -4,17 +4,9 @@ import "core:fmt"
 import "core:testing"
 import "core:container/queue"
 
-ctx: Context
-
-Sprite :: struct {
-  x, y: f32,
-  width, height: f32,
-}
-
-Name :: distinct string
-
 @test
 test_entity :: proc(test: ^testing.T) {
+  ctx: Context
   ctx = init_ecs()
   defer deinit_ecs(&ctx)
 
@@ -30,6 +22,14 @@ test_entity :: proc(test: ^testing.T) {
 
 @test
 test_component :: proc(test: ^testing.T) {
+  ctx: Context
+  Sprite :: struct {
+    x, y: f32,
+    width, height: f32,
+  }
+
+  Name :: distinct string
+
   ctx = init_ecs()
   defer deinit_ecs(&ctx)
 
@@ -40,8 +40,8 @@ test_component :: proc(test: ^testing.T) {
     width = 64, height = 64,
   }
   
-  is_component_added_properly :: proc(test: ^testing.T, entity: Entity, component: $A) -> (^A) {
-    comp, comp_err := add_component(&ctx, entity, component)
+  is_component_added_properly :: proc(ctx: ^Context, test: ^testing.T, entity: Entity, component: $A) -> (^A) {
+    comp, comp_err := add_component(ctx, entity, component)
     is_returned_comp_equal := comp^ == component
     testing.expect(test, is_returned_comp_equal == true, "Error: The returned component is not equal to the original component passed in.")
     testing.expect_value(test, comp_err, ECS_Error.NO_ERROR)
@@ -51,13 +51,13 @@ test_component :: proc(test: ^testing.T) {
     return comp
   }
 
-  sprite_comp := is_component_added_properly(test, entity, test_comp_value)
-  name_comp := is_component_added_properly(test, entity, Name("Test Name"))
+  sprite_comp := is_component_added_properly(&ctx, test, entity, test_comp_value)
+  name_comp := is_component_added_properly(&ctx, test, entity, Name("Test Name"))
 
-  is_component_removed_properly :: proc(test: ^testing.T, entity: Entity, $T: typeid) {
+  is_component_removed_properly :: proc(ctx: ^Context, test: ^testing.T, entity: Entity, $T: typeid) {
     old_entity_index := ctx.component_map[T].entity_indices[entity]
     
-    comp_err := remove_component(&ctx, entity, T)
+    comp_err := remove_component(ctx, entity, T)
     testing.expect_value(test, comp_err, ECS_Error.NO_ERROR)
 
     is_entity_index_valid := entity in ctx.component_map[T].entity_indices
@@ -65,6 +65,6 @@ test_component :: proc(test: ^testing.T) {
     testing.expect(test, old_entity_index == queue.front(&(&ctx.component_map[T]).available_slots), "Error: The old component slot should be put on the queue!")
   }
 
-  is_component_removed_properly(test, entity, Sprite)
-  is_component_removed_properly(test, entity, Name)
+  is_component_removed_properly(&ctx, test, entity, Sprite)
+  is_component_removed_properly(&ctx, test, entity, Name)
 }
