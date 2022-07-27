@@ -5,23 +5,8 @@ import "core:testing"
 import "core:container/queue"
 
 import ecs "../"
-
-@test
-test_entity :: proc(test: ^testing.T) {
-  using ecs
-  ctx: Context
-  ctx = init_ecs()
-  defer deinit_ecs(&ctx)
-
-  entity := create_entity(&ctx)
-  testing.expect(test, entity == 0, "Error: The first entity id should be zero!")  
-  testing.expect(test, ctx.entities.available_slots.len == 0, "Error: The queue should be empty upon creation of the first entity!")  
-  testing.expect(test, ctx.entities.current_entity_id == 1, "Error: The current entity id should have been incremented!")
-
-  destroy_entity(&ctx, entity)
-  testing.expect(test, ctx.entities.available_slots.len == 1, "Error: The deleted entity id should be placed on the queue!")
-  testing.expect(test, queue.front(&ctx.entities.available_slots) == 0, "Error: The new entity slot should be 0!")
-}
+import "core:strings"
+import "core:strconv"
 
 @test
 test_component :: proc(test: ^testing.T) {
