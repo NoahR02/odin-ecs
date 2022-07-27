@@ -6,8 +6,8 @@ import "core:container/queue"
 Component_List :: struct {
   type: typeid,
   data: ^runtime.Raw_Dynamic_Array,
-  entity_indices: map[Entity]int,
-  available_slots: queue.Queue(int),
+  entity_indices: map[Entity]uint,
+  available_slots: queue.Queue(uint),
 }
 
 @private
@@ -66,7 +66,7 @@ remove_component :: proc(ctx: ^Context, entity: Entity, $T: typeid) -> ECS_Error
   comp_map := &ctx.component_map[T]
   
   // Push the component index onto the slot queue, so the next component dosen't use more memory.
-  queue.push_back(&comp_map.available_slots, int(comp_map.entity_indices[entity]))
+  queue.push_back(&comp_map.available_slots, uint(comp_map.entity_indices[entity]))
   // Remove the old entity key.
   delete_key(&comp_map.entity_indices, entity)
 

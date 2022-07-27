@@ -1,11 +1,14 @@
-package ecs
+package test_ecs
 
 import "core:fmt"
 import "core:testing"
 import "core:container/queue"
 
+import ecs "../"
+
 @test
 test_entity :: proc(test: ^testing.T) {
+  using ecs
   ctx: Context
   ctx = init_ecs()
   defer deinit_ecs(&ctx)
@@ -22,6 +25,7 @@ test_entity :: proc(test: ^testing.T) {
 
 @test
 test_component :: proc(test: ^testing.T) {
+  using ecs
   ctx: Context
   Sprite :: struct {
     x, y: f32,
@@ -40,7 +44,8 @@ test_component :: proc(test: ^testing.T) {
     width = 64, height = 64,
   }
   
-  is_component_added_properly :: proc(ctx: ^Context, test: ^testing.T, entity: Entity, component: $A) -> (^A) {
+  is_component_added_properly :: proc(ctx: ^ecs.Context, test: ^testing.T, entity: ecs.Entity, component: $A) -> (^A) {
+    
     comp, comp_err := add_component(ctx, entity, component)
     is_returned_comp_equal := comp^ == component
     testing.expect(test, is_returned_comp_equal == true, "Error: The returned component is not equal to the original component passed in.")
@@ -54,7 +59,7 @@ test_component :: proc(test: ^testing.T) {
   sprite_comp := is_component_added_properly(&ctx, test, entity, test_comp_value)
   name_comp := is_component_added_properly(&ctx, test, entity, Name("Test Name"))
 
-  is_component_removed_properly :: proc(ctx: ^Context, test: ^testing.T, entity: Entity, $T: typeid) {
+  is_component_removed_properly :: proc(ctx: ^ecs.Context, test: ^testing.T, entity: ecs.Entity, $T: typeid) {
     old_entity_index := ctx.component_map[T].entity_indices[entity]
     
     comp_err := remove_component(ctx, entity, T)

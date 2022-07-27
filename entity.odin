@@ -2,13 +2,13 @@ package ecs
 
 import "core:container/queue"
 
-Entity :: distinct int
+Entity :: distinct uint
 
 Entities :: struct {
-  current_entity_id: int,
+  current_entity_id: uint,
 
   entities: [dynamic]Entity,
-  available_slots: queue.Queue(int),
+  available_slots: queue.Queue(uint),
 }
 
 create_entity :: proc(ctx: ^Context) -> Entity {
@@ -39,6 +39,6 @@ destroy_entity :: proc(ctx: ^Context, entity: Entity) {
    delete_key(&component.entity_indices, entity)
   }
 
-  entities[int(entity)] = {}
-  queue.push_back(&available_slots, int(entity))
+  entities[uint(entity)] = {}
+  queue.push_back(&available_slots, uint(entity))
 }
