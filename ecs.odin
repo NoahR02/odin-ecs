@@ -19,7 +19,7 @@ Context :: struct {
 
 init_ecs :: proc() -> (ctx: Context) {
   create_entities :: proc(ctx: ^Context) {
-    ctx.entities.entities = make([dynamic]Entity)
+    ctx.entities.entities = make([dynamic]Entity_And_Some_Info)
     queue.init(&ctx.entities.available_slots)
   }
   create_entities(&ctx)
@@ -44,7 +44,6 @@ deinit_ecs :: proc(ctx: ^Context) {
 
   destroy_component_map :: proc(ctx: ^Context) {
     for key, value in ctx.component_map {
-      queue.destroy(&(&ctx.component_map[key]).available_slots)
       free(value.data^.data)
       free(value.data)
     }

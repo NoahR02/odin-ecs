@@ -2,12 +2,12 @@ package ecs
 
 import "core:runtime"
 import "core:container/queue"
+import "core:slice"
 
 Component_List :: struct {
   type: typeid,
   data: ^runtime.Raw_Dynamic_Array,
   entity_indices: map[Entity]uint,
-  available_slots: queue.Queue(uint),
 }
 
 @private
@@ -22,7 +22,6 @@ register_component :: proc(ctx: ^Context, $T: typeid) -> ECS_Error {
     type = T,
     data = cast(^runtime.Raw_Dynamic_Array)array,
   }
-  queue.init(&(&ctx.component_map[T]).available_slots)
 
   return .NO_ERROR
 }
@@ -36,41 +35,54 @@ add_component :: proc(ctx: ^Context, entity: Entity, component: $T) -> (^T, ECS_
   array := cast(^[dynamic]T)ctx.component_map[T].data
   comp_map := &ctx.component_map[T]
   
-  if queue.len(ctx.component_map[T].available_slots) <= 0 {
-    // Add a new component to the component array.
-    append_elem(array, component) 
-    // Map the entity to the new index, so we can lookup the component index later,
-    comp_map.entity_indices[entity] = len(array) - 1
-  } else {
-    // Use a unused slot in the array to save memory.
-    item := queue.pop_front(&comp_map.available_slots)
-    // Map the entity to the unusued index, so we can lookup the component index later.
-    comp_map.entity_indices[entity] = item
-    array[comp_map.entity_indices[entity]] = component
-  }
+  // Add a new component to the component array.
+  append_elem(array, component) 
+  // Map the entity to the new index, so we can lookup the component index later,
+  comp_map.entity_indices[entity] = len(array) - 1
 
   return &array[comp_map.entity_indices[entity]], .NO_ERROR
 }
 
-has_component :: proc(ctx: ^Context, entity: Entity, $T: typeid) -> bool {
+has_component :: proc(ctx: ^Context, entity: Entity, T: typeid) -> bool {
   return entity in (&ctx.component_map[T]).entity_indices
 }
 
-remove_component :: proc(ctx: ^Context, entity: Entity, $T: typeid) -> ECS_Error {
+@private
+remove_component_with_typeid :: proc(ctx: ^Context, entity: Entity, type_id: typeid) -> ECS_Error {
+  using ctx.entities
 
-  if !has_component(ctx, entity, T) {
+  if !has_component(ctx, entity, type_id) {
     return .ENTITY_DOES_NOT_HAVE_THIS_COMPONENT
   }
+  index := ctx.component_map[type_id].entity_indices[entity]
 
-  array := cast(^[dynamic]T)ctx.component_map[T].data
-  comp_map := &ctx.component_map[T]
-  
-  // Push the component index onto the slot queue, so the next component dosen't use more memory.
-  queue.push_back(&comp_map.available_slots, uint(comp_map.entity_indices[entity]))
-  // Remove the old entity key.
+  array_len := ctx.component_map[type_id].data^.len
+  array := ctx.component_map[type_id].data^.data
+  comp_map := ctx.component_map[type_id]
+
+  info := type_info_of(type_id)
+  struct_size := info.size
+  array_in_bytes := slice.bytes_from_ptr(array, array_len * struct_size)
+
+  byte_index := int(index) * struct_size
+  last_byte_index := (len(array_in_bytes)) - struct_size  
+  e_index := comp_map.entity_indices[entity]
+  e_back := uint(array_len - 1)
+  if e_index != e_back {    
+    slice.swap_with_slice(array_in_bytes[byte_index: byte_index + struct_size], array_in_bytes[last_byte_index:])
+    // TODO: Remove this and replace it with something that dosen't have to do a lot of searching.
+    for _, value in &comp_map.entity_indices {
+      if value == e_back { value = e_index }
+    }
+  }
+
   delete_key(&comp_map.entity_indices, entity)
 
   return .NO_ERROR
+}
+
+remove_component :: proc(ctx: ^Context, entity: Entity, $T: typeid) -> ECS_Error {
+  return remove_component_with_typeid(ctx, entity, T)
 }
 
 get_component :: proc(ctx: ^Context, entity: Entity, $T: typeid) -> (component: ^T, error: ECS_Error) {
@@ -89,13 +101,8 @@ get_component :: proc(ctx: ^Context, entity: Entity, $T: typeid) -> (component: 
   return &array[index], .NO_ERROR
 }
 
-get_component_list :: proc(ctx: ^Context, $T: typeid) -> (component_list: [dynamic]^T, error: ECS_Error) {
+get_component_list :: proc(ctx: ^Context, $T: typeid) -> ([]T, ECS_Error) {
   array := cast(^[dynamic]T)ctx.component_map[T].data
-  component_list = make_dynamic_array([dynamic]^T)
 
-  for _, index in ctx.component_map[T].entity_indices {
-    append_elem(&component_list, &array[index])
-  }
-
-  return component_list, .NO_ERROR
+  return array[:], .NO_ERROR
 }

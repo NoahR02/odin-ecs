@@ -52,7 +52,6 @@ test_component :: proc(test: ^testing.T) {
 
     is_entity_index_valid := entity in ctx.component_map[T].entity_indices
     testing.expect(test, is_entity_index_valid == false, "Error: The key should be deleted after the entity removes the component.")
-    testing.expect(test, old_entity_index == queue.front(&(&ctx.component_map[T]).available_slots), "Error: The old component slot should be put on the queue!")
   }
 
   is_component_removed_properly(&ctx, test, entity, Sprite)
