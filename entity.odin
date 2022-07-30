@@ -33,6 +33,9 @@ create_entity :: proc(ctx: ^Context) -> Entity {
 }
 
 is_entity_valid :: proc(ctx: ^Context, entity: Entity) -> bool {
+  if uint(entity) >= len(ctx.entities.entities) {
+    return false
+  }
   return ctx.entities.entities[uint(entity)].is_valid
 }
 
