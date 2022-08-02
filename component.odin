@@ -22,6 +22,7 @@ register_component :: proc(ctx: ^Context, $T: typeid) -> ECS_Error {
     type = T,
     data = cast(^runtime.Raw_Dynamic_Array)array,
   }
+  array^ = make_dynamic_array([dynamic]T)
 
   return .NO_ERROR
 }
