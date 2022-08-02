@@ -39,6 +39,41 @@ is_entity_valid :: proc(ctx: ^Context, entity: Entity) -> bool {
   return ctx.entities.entities[uint(entity)].is_valid
 }
 
+// This is slow. 
+// This will be significantly faster when an archetype or sparse set ECS is implemented.
+get_entities_with_components :: proc(ctx: ^Context, components: []typeid) -> (entities: [dynamic]Entity) {
+  entities = make([dynamic]Entity)
+
+  if len(components) <= 0 {
+    return entities
+  } else if len(components) == 1 {
+    for entity, _ in ctx.component_map[components[0]].entity_indices {
+      append_elem(&entities, entity)
+    }
+    return entities
+  }
+
+  components_2 := components[1:]
+
+  for entity, _ in ctx.component_map[components[0]].entity_indices {
+
+    has_all_components := true
+    for comp_type in components_2 {
+      if !has_component(ctx, entity, comp_type) {
+        has_all_components = false
+        break
+      }
+    }
+
+    if has_all_components {
+      append_elem(&entities, entity)
+    }
+
+  }
+
+  return entities
+}
+
 destroy_entity :: proc(ctx: ^Context, entity: Entity) {
   using ctx.entities
   
