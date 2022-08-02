@@ -53,12 +53,10 @@ get_entities_with_components :: proc(ctx: ^Context, components: []typeid) -> (en
     return entities
   }
 
-  components_2 := components[1:]
-
   for entity, _ in ctx.component_map[components[0]].entity_indices {
 
     has_all_components := true
-    for comp_type in components_2 {
+    for comp_type in components[1:] {
       if !has_component(ctx, entity, comp_type) {
         has_all_components = false
         break
