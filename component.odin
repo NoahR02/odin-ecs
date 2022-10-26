@@ -107,3 +107,17 @@ get_component_list :: proc(ctx: ^Context, $T: typeid) -> ([]T, ECS_Error) {
 
   return array[:], .NO_ERROR
 }
+
+set_component :: proc(ctx: ^Context, entity: Entity, component: $T) -> ECS_Error {
+  if !has_component(ctx, entity, T) {
+    return .COMPONENT_NOT_REGISTERED
+  } 
+  index, is_entity_a_key := ctx.component_map[T].entity_indices[entity]
+
+  if !is_entity_a_key {
+    return .ENTITY_DOES_NOT_MAP_TO_ANY_INDEX
+  }
+  array := cast(^[dynamic]T)ctx.component_map[T].data
+  array[index] = component;
+  return .NO_ERROR
+}
