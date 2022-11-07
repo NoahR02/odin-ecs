@@ -44,3 +44,12 @@ get_components :: proc {
   get_components_4,
   get_components_5,
 }
+
+get_component_slice_from_entities :: proc (ctx:^Context, entities:[]Entity, $T:typeid, allocator := context.allocator) -> []^T {
+  context.user_ptr = ctx
+  get_t_proc :: proc (h:Entity) -> ^T {
+      e, err :=  get_component(cast(^Context)context.user_ptr, h, T) or_else nil
+      return e
+  }
+  return slice.mapper(entities, get_t_proc)
+}
