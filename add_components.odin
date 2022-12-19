@@ -39,36 +39,36 @@ add_components_5 :: proc(ctx: ^Context, entity: Entity, a:$A, b:$B, c:$C, d:$D, 
 }
 
 add_components_6 :: proc(ctx: ^Context, entity: Entity, a:$A, b:$B, c:$C, d:$D, e:$E, f:$F) -> (^A, ^B, ^C, ^D, ^E, ^F, [5]ECS_Error) {
-    _a, err1 := add_component(ctx, entity, a)
-    _b, err2 := add_component(ctx, entity, b)
-    _c, err3 := add_component(ctx, entity, c)
-    _d, err4 := add_component(ctx, entity, d)
-    _e, err5 := add_component(ctx, entity, e)
-    _f, err6 := add_component(ctx, entity, f)
-    return _a, _b, _c, _d, _e, {}
+  _a, err1 := add_component(ctx, entity, a)
+  _b, err2 := add_component(ctx, entity, b)
+  _c, err3 := add_component(ctx, entity, c)
+  _d, err4 := add_component(ctx, entity, d)
+  _e, err5 := add_component(ctx, entity, e)
+  _f, err6 := add_component(ctx, entity, f)
+  return _a, _b, _c, _d, _e, {}
 }
 
 add_components_7 :: proc(ctx: ^Context, entity: Entity, a:$A, b:$B, c:$C, d:$D, e:$E, f:$F, g:$G) -> (^A, ^B, ^C, ^D, ^E, ^F, ^G, [5]ECS_Error) {
-_a, err1 := add_component(ctx, entity, a)
-_b, err2 := add_component(ctx, entity, b)
-_c, err3 := add_component(ctx, entity, c)
-_d, err4 := add_component(ctx, entity, d)
-_e, err5 := add_component(ctx, entity, e)
-_f, err6 := add_component(ctx, entity, f)
-_g, err7 := add_component(ctx, entity, g)
+  _a, err1 := add_component(ctx, entity, a)
+  _b, err2 := add_component(ctx, entity, b)
+  _c, err3 := add_component(ctx, entity, c)
+  _d, err4 := add_component(ctx, entity, d)
+  _e, err5 := add_component(ctx, entity, e)
+  _f, err6 := add_component(ctx, entity, f)
+  _g, err7 := add_component(ctx, entity, g)
     return _a, _b, _c, _d, _e, _f, _g, {}
 }
 
 add_components_8 :: proc(ctx: ^Context, entity: Entity, a:$A, b:$B, c:$C, d:$D, e:$E, f:$F, g:$G, h:$H) -> (^A, ^B, ^C, ^D, ^E, ^F, ^G, ^H, [5]ECS_Error) {
-_a, err1 := add_component(ctx, entity, a)
-_b, err2 := add_component(ctx, entity, b)
-_c, err3 := add_component(ctx, entity, c)
-_d, err4 := add_component(ctx, entity, d)
-_e, err5 := add_component(ctx, entity, e)
-_f, err6 := add_component(ctx, entity, f)
-_g, err7 := add_component(ctx, entity, g)
-_h, err8 := add_component(ctx, entity, g)
-    return _a, _b, _c, _d, _e, _f, _g, _h, {}
+  _a, err1 := add_component(ctx, entity, a)
+  _b, err2 := add_component(ctx, entity, b)
+  _c, err3 := add_component(ctx, entity, c)
+  _d, err4 := add_component(ctx, entity, d)
+  _e, err5 := add_component(ctx, entity, e)
+  _f, err6 := add_component(ctx, entity, f)
+  _g, err7 := add_component(ctx, entity, g)
+  _h, err8 := add_component(ctx, entity, g)
+   return _a, _b, _c, _d, _e, _f, _g, _h, {}
 }
 
 add_components :: proc {
