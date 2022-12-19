@@ -56,7 +56,7 @@ add_components_7 :: proc(ctx: ^Context, entity: Entity, a:$A, b:$B, c:$C, d:$D, 
   _e, err5 := add_component(ctx, entity, e)
   _f, err6 := add_component(ctx, entity, f)
   _g, err7 := add_component(ctx, entity, g)
-    return _a, _b, _c, _d, _e, _f, _g, {}
+  return _a, _b, _c, _d, _e, _f, _g, {}
 }
 
 add_components_8 :: proc(ctx: ^Context, entity: Entity, a:$A, b:$B, c:$C, d:$D, e:$E, f:$F, g:$G, h:$H) -> (^A, ^B, ^C, ^D, ^E, ^F, ^G, ^H, [5]ECS_Error) {
@@ -67,8 +67,8 @@ add_components_8 :: proc(ctx: ^Context, entity: Entity, a:$A, b:$B, c:$C, d:$D, 
   _e, err5 := add_component(ctx, entity, e)
   _f, err6 := add_component(ctx, entity, f)
   _g, err7 := add_component(ctx, entity, g)
-  _h, err8 := add_component(ctx, entity, g)
-   return _a, _b, _c, _d, _e, _f, _g, _h, {}
+  _h, err8 := add_component(ctx, entity, h)
+  return _a, _b, _c, _d, _e, _f, _g, _h, {}
 }
 
 add_components :: proc {
