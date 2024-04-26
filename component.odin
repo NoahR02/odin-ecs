@@ -72,7 +72,7 @@ remove_component_with_typeid :: proc(ctx: ^Context, entity: Entity, type_id: typ
   if e_index != e_back {    
     slice.swap_with_slice(array_in_bytes[byte_index: byte_index + struct_size], array_in_bytes[last_byte_index:])
     // TODO: Remove this and replace it with something that dosen't have to do a lot of searching.
-    for _, value in &comp_map.entity_indices {
+    for _, &value in comp_map.entity_indices {
       if value == e_back { value = e_index }
     }
   }
