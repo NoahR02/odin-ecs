@@ -105,6 +105,10 @@ get_component :: proc(ctx: ^Context, entity: Entity, $T: typeid) -> (component: 
 get_component_list :: proc(ctx: ^Context, $T: typeid) -> ([]T, ECS_Error) {
   array := cast(^[dynamic]T)ctx.component_map[T].data
 
+  if array == nil {
+    return {}, .COMPONENT_NOT_REGISTERED
+  }
+
   return array[:], .NO_ERROR
 }
 
