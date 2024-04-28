@@ -76,6 +76,12 @@ remove_component_with_typeid :: proc(ctx: ^Context, entity: Entity, type_id: typ
       if value == e_back { value = e_index }
     }
   }
+  
+  // TODO: Handle resize errors
+  resize_allocator_error := __resize_raw_dynamic_array(ctx.component_map[type_id].data, struct_size, info.align, ctx.component_map[type_id].data^.len - 1, true)
+  if resize_allocator_error != .None {
+    panic("Failed to resize the component list.")
+  }
 
   delete_key(&comp_map.entity_indices, entity)
 
