@@ -1,7 +1,7 @@
 package ecs
 
-import "core:runtime"
-import "core:intrinsics"
+import "base:runtime"
+import "base:intrinsics"
 
 
 // Copied and adjusted from here: https://github.com/odin-lang/Odin/blob/8fd318ea7a76b75974c834bb9d329958c81ce652/base/runtime/core_builtin.odin#L736

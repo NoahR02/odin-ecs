@@ -1,6 +1,6 @@
 package ecs
 
-import "core:runtime"
+import "base:runtime"
 import "core:container/queue"
 import "core:slice"
 
